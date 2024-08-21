@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dada.delayqueue.mapper.OrderMapper">
+    <insert id="save" parameterType="com.dada.delayqueue.entity.Order">
+        insert into delayqueue_order
+        (order_id,user_id) values (#{orderId},#{userId});
+    </insert>
+
+    <update id="update" parameterType="java.lang.String">
+/*未在指定时间内支付的订单 status= 0，修改status = 2，表示支付已经取消*/
+        update delayqueue_order set status = 2 where #{orderId} = order_id and status = 0;
+    </update>
+
+</mapper>

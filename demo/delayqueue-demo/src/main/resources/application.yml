@@ -1,0 +1,48 @@
+server:
+  port: 10010
+
+spring:
+  application:
+    name: delayqueue-redission-kafka
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://43.142.255.173:3306/db_middleware?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username:
+    password:
+  kafka:
+    bootstrap-servers: 192.168.19.102:9092
+    consumer:
+      group-id: delayqueue
+    template:
+      default-topic: DELAY-QUEUE-TOPIC
+    listener:
+      concurrency: 3 # 消费者线程数
+  redis:
+    host: 43.142.255.173
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 1
+        time-between-eviction-runs: 10s
+delay:
+  #配置 kafka的超时订单主题
+  kafka:
+    topic: QUEUE_NOT_PAID
+  redisson:
+    enable: true
+    registerService: order #注册的服务名
+    consumerSleep: 500 #消费者休眠时间
+
+
+
+groot: #groot配置
+  redis:
+    delay:
+      service: other #注册的服务名
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
